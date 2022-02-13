@@ -1,0 +1,28 @@
+--- 
+# Benjamin Gloger
+# bsg5250@g.rit.edu
+# Feb 11 2022
+  - hosts: blue_nodes
+    become: yes
+
+    tasks:
+      #install everything
+    - name: Ensure python3 is installed
+      apt: name=python3 state=present update_cache=yes
+
+    - name: Ensure pip is isntalled
+      apt: name=python3-pip state=present update_cache=yes
+
+    - name: Ensure scapy is installed
+      pip:
+        name: scapy
+        state: present
+    
+    - name: copy blue_side.py
+      copy:
+        src: blue_side.py
+        dest: /tmp/blue_side.py
+
+    - name: start blue_side.py on blue nodes
+      command: python3 /tmp/blue_side.py
+      become: yes
